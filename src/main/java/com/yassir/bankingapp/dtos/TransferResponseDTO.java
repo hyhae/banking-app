@@ -11,10 +11,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransferDTO {
+public class TransferResponseDTO extends TransferRequestDTO{
     Long id;
-    Long fromId;
-    Long toId;
     LocalDate transferDate;
-    Long transferAmount;
 }

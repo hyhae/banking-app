@@ -1,6 +1,7 @@
 package com.yassir.bankingapp.controllers;
 
-import com.yassir.bankingapp.dtos.AccountDTO;
+import com.yassir.bankingapp.dtos.AccountRequestDTO;
+import com.yassir.bankingapp.dtos.AccountResponseDTO;
 import com.yassir.bankingapp.dtos.BalanceDTO;
 import com.yassir.bankingapp.services.IAccountsService;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,9 +25,9 @@ public class AccountsController {
 
     @PostMapping("/create")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public AccountDTO createNewAccount(
-            @NonNull @RequestBody @Parameter(description = "Name and initial deposit of the new account", required = true)AccountDTO accountDTO){
-        return accountsService.createAccount(accountDTO);
+    public AccountResponseDTO createNewAccount(
+            @NonNull @RequestBody @Parameter(description = "Name and initial deposit of the new account", required = true) AccountRequestDTO accountRequestDTO){
+        return accountsService.createAccount(accountRequestDTO);
     }
 
 }

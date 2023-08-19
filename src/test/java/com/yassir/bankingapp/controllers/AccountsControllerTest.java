@@ -1,12 +1,11 @@
 package com.yassir.bankingapp.controllers;
-import com.yassir.bankingapp.dtos.AccountDTO;
+import com.yassir.bankingapp.dtos.AccountResponseDTO;
 import com.yassir.bankingapp.dtos.BalanceDTO;
 import com.yassir.bankingapp.services.IAccountsService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,22 +43,22 @@ public class AccountsControllerTest {
     @Test
     public void testCreateNewAccount_() {
         // Arrange
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setHolderName("John Doe");
-        accountDTO.setBalance(1000L);
+        AccountResponseDTO accountResponseDTO = new AccountResponseDTO();
+        accountResponseDTO.setHolderName("John Doe");
+        accountResponseDTO.setBalance(1000L);
 
-        AccountDTO expectedAccountDTO = new AccountDTO();
-        expectedAccountDTO.setId(1L);
-        expectedAccountDTO.setHolderName("John Doe");
-        expectedAccountDTO.setBalance(1000L);
+        AccountResponseDTO expectedAccountResponseDTO = new AccountResponseDTO();
+        expectedAccountResponseDTO.setId(1L);
+        expectedAccountResponseDTO.setHolderName("John Doe");
+        expectedAccountResponseDTO.setBalance(1000L);
 
-        when(accountsService.createAccount(accountDTO)).thenReturn(expectedAccountDTO);
+        when(accountsService.createAccount(accountResponseDTO)).thenReturn(expectedAccountResponseDTO);
 
         // Act
-        AccountDTO actualAccountDTO = accountsController.createNewAccount(accountDTO);
+        AccountResponseDTO actualAccountResponseDTO = accountsController.createNewAccount(accountResponseDTO);
 
         // Assert
-        assertEquals(expectedAccountDTO, actualAccountDTO);
-        verify(accountsService, times(1)).createAccount(accountDTO);
+        assertEquals(expectedAccountResponseDTO, actualAccountResponseDTO);
+        verify(accountsService, times(1)).createAccount(accountResponseDTO);
     }
 }

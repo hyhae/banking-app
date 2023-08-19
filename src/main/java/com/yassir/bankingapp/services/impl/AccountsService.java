@@ -1,8 +1,10 @@
 package com.yassir.bankingapp.services.impl;
 
-import com.yassir.bankingapp.dtos.AccountDTO;
+import com.yassir.bankingapp.dtos.AccountRequestDTO;
+import com.yassir.bankingapp.dtos.AccountResponseDTO;
 import com.yassir.bankingapp.dtos.BalanceDTO;
-import com.yassir.bankingapp.dtos.TransferDTO;
+import com.yassir.bankingapp.dtos.TransferRequestDTO;
+import com.yassir.bankingapp.dtos.TransferResponseDTO;
 import com.yassir.bankingapp.entities.Account;
 import com.yassir.bankingapp.entities.Customer;
 import com.yassir.bankingapp.mappers.AccountsMapper;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -27,7 +28,7 @@ public class AccountsService implements IAccountsService {
     ICustomerService customerService;
 
     @Override
-    public AccountDTO createAccount(AccountDTO accountRequestDTO) {
+    public AccountResponseDTO createAccount(AccountRequestDTO accountRequestDTO) {
         Assert.notNull(accountRequestDTO);
         Assert.notNull(accountRequestDTO.getHolderName());
         Assert.notNull(accountRequestDTO.getBalance());
@@ -65,13 +66,13 @@ public class AccountsService implements IAccountsService {
 
     @Override
     @Transactional
-    public boolean submitTransfer(TransferDTO transferDTO){
-        Optional<Account> sourceAccount = accountsRepository.findById(transferDTO.getFromId());
-        Optional<Account> targetAccount = accountsRepository.findById(transferDTO.getToId());
+    public boolean submitTransfer(TransferRequestDTO transferRequestDTO){
+        Optional<Account> sourceAccount = accountsRepository.findById(transferRequestDTO.getFromId());
+        Optional<Account> targetAccount = accountsRepository.findById(transferRequestDTO.getToId());
 
-        if(sourceAccount.isPresent() && targetAccount.isPresent() && sourceAccount.get().getBalance()>= transferDTO.getTransferAmount()){
-            sourceAccount.get().setBalance(sourceAccount.get().getBalance()-transferDTO.getTransferAmount());
-            targetAccount.get().setBalance(targetAccount.get().getBalance()+transferDTO.getTransferAmount());
+        if(sourceAccount.isPresent() && targetAccount.isPresent() && sourceAccount.get().getBalance()>= transferRequestDTO.getTransferAmount()){
+            sourceAccount.get().setBalance(sourceAccount.get().getBalance()- transferRequestDTO.getTransferAmount());
+            targetAccount.get().setBalance(targetAccount.get().getBalance()+ transferRequestDTO.getTransferAmount());
             accountsRepository.save(sourceAccount.get());
             accountsRepository.save(targetAccount.get());
             return true;

@@ -1,7 +1,8 @@
 package com.yassir.bankingapp.services.impl;
 
 import com.yassir.bankingapp.dtos.GenericResponseDTO;
-import com.yassir.bankingapp.dtos.TransferDTO;
+import com.yassir.bankingapp.dtos.TransferResponseDTO;
+import com.yassir.bankingapp.dtos.TransferRequestDTO;
 import com.yassir.bankingapp.entities.Account;
 import com.yassir.bankingapp.entities.Transfer;
 import com.yassir.bankingapp.mappers.TransfersMapper;
@@ -31,7 +32,7 @@ public class TransfersService implements ITransfersService {
 
     @Override
     @Transactional
-    public GenericResponseDTO doTransfer(TransferDTO transferDTO) {
+    public GenericResponseDTO doTransfer(TransferRequestDTO transferDTO) {
         Assert.notNull(transferDTO);
         Assert.notNull(transferDTO.getTransferAmount());
         Assert.notNull(transferDTO.getToId());
@@ -58,7 +59,7 @@ public class TransfersService implements ITransfersService {
     }
 
     @Override
-    public List<TransferDTO> getTransferHistoryForAccount(Long accountId) {
+    public List<TransferResponseDTO> getTransferHistoryForAccount(Long accountId) {
         Optional<Account> account = accountsService.getAccount(accountId);
         if(account.isPresent()){
             List<Transfer> transfers = transfersRepository.findByFromAccountOrToAccount(account.get(), account.get());

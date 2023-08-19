@@ -1,7 +1,7 @@
 package com.yassir.bankingapp.services;
-import com.yassir.bankingapp.dtos.AccountDTO;
+import com.yassir.bankingapp.dtos.AccountResponseDTO;
 import com.yassir.bankingapp.dtos.BalanceDTO;
-import com.yassir.bankingapp.dtos.TransferDTO;
+import com.yassir.bankingapp.dtos.TransferResponseDTO;
 import com.yassir.bankingapp.entities.Account;
 import com.yassir.bankingapp.entities.Customer;
 import com.yassir.bankingapp.mappers.AccountsMapper;
@@ -36,7 +36,7 @@ public class AccountsServiceTest {
     @Test
     public void testCreateAccount_customerExists() {
         // Arrange
-        AccountDTO accountRequestDTO = new AccountDTO();
+        AccountResponseDTO accountRequestDTO = new AccountResponseDTO();
         accountRequestDTO.setHolderName("John Doe");
         accountRequestDTO.setBalance(100L);
 
@@ -55,7 +55,7 @@ public class AccountsServiceTest {
         when(accountsMapper.fromEntityToDto(account)).thenReturn(accountRequestDTO);
 
         // Act
-        AccountDTO createdAccount = accountsService.createAccount(accountRequestDTO);
+        AccountResponseDTO createdAccount = accountsService.createAccount(accountRequestDTO);
 
         // Assert
         assertNotNull(createdAccount);
@@ -68,7 +68,7 @@ public class AccountsServiceTest {
     @Test
     public void testCreateAccount_newCustomer() {
         // Arrange
-        AccountDTO accountRequestDTO = new AccountDTO();
+        AccountResponseDTO accountRequestDTO = new AccountResponseDTO();
         accountRequestDTO.setHolderName("John Doe");
         accountRequestDTO.setBalance(100L);
 
@@ -89,7 +89,7 @@ public class AccountsServiceTest {
         when(accountsMapper.fromEntityToDto(account)).thenReturn(accountRequestDTO);
 
         // Act
-        AccountDTO createdAccount = accountsService.createAccount(accountRequestDTO);
+        AccountResponseDTO createdAccount = accountsService.createAccount(accountRequestDTO);
 
         // Assert
         assertNotNull(createdAccount);
@@ -183,13 +183,13 @@ public class AccountsServiceTest {
         when(accountsRepository.findById(fromId)).thenReturn(Optional.of(sourceAccount));
         when(accountsRepository.findById(toId)).thenReturn(Optional.of(targetAccount));
 
-        TransferDTO transferDTO = new TransferDTO();
-        transferDTO.setFromId(fromId);
-        transferDTO.setToId(toId);
-        transferDTO.setTransferAmount(transferAmount);
+        TransferResponseDTO transferResponseDTO = new TransferResponseDTO();
+        transferResponseDTO.setFromId(fromId);
+        transferResponseDTO.setToId(toId);
+        transferResponseDTO.setTransferAmount(transferAmount);
 
         // Act
-        boolean transferSuccess = accountsService.submitTransfer(transferDTO);
+        boolean transferSuccess = accountsService.submitTransfer(transferResponseDTO);
 
         // Assert
         assertTrue(transferSuccess);
@@ -219,13 +219,13 @@ public class AccountsServiceTest {
         when(accountsRepository.findById(fromId)).thenReturn(Optional.of(sourceAccount));
         when(accountsRepository.findById(toId)).thenReturn(Optional.of(targetAccount));
 
-        TransferDTO transferDTO = new TransferDTO();
-        transferDTO.setFromId(fromId);
-        transferDTO.setToId(toId);
-        transferDTO.setTransferAmount(transferAmount);
+        TransferResponseDTO transferResponseDTO = new TransferResponseDTO();
+        transferResponseDTO.setFromId(fromId);
+        transferResponseDTO.setToId(toId);
+        transferResponseDTO.setTransferAmount(transferAmount);
 
         // Act
-        boolean transferSuccess = accountsService.submitTransfer(transferDTO);
+        boolean transferSuccess = accountsService.submitTransfer(transferResponseDTO);
 
         // Assert
         assertFalse(transferSuccess);
@@ -249,13 +249,13 @@ public class AccountsServiceTest {
         when(accountsRepository.findById(fromId)).thenReturn(Optional.of(sourceAccount));
         when(accountsRepository.findById(toId)).thenReturn(Optional.empty());
 
-        TransferDTO transferDTO = new TransferDTO();
-        transferDTO.setFromId(fromId);
-        transferDTO.setToId(toId);
-        transferDTO.setTransferAmount(transferAmount);
+        TransferResponseDTO transferResponseDTO = new TransferResponseDTO();
+        transferResponseDTO.setFromId(fromId);
+        transferResponseDTO.setToId(toId);
+        transferResponseDTO.setTransferAmount(transferAmount);
 
         // Act
-        boolean transferSuccess = accountsService.submitTransfer(transferDTO);
+        boolean transferSuccess = accountsService.submitTransfer(transferResponseDTO);
 
         // Assert
         assertFalse(transferSuccess);

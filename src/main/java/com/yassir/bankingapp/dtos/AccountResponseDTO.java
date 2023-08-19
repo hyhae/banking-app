@@ -9,8 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountDTO {
+public class AccountResponseDTO extends AccountRequestDTO {
     Long id;
-    String holderName;
-    Long balance;
 }

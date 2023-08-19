@@ -1,7 +1,7 @@
 package com.yassir.bankingapp.services;
 
 import com.yassir.bankingapp.dtos.GenericResponseDTO;
-import com.yassir.bankingapp.dtos.TransferDTO;
+import com.yassir.bankingapp.dtos.TransferResponseDTO;
 import com.yassir.bankingapp.entities.Account;
 import com.yassir.bankingapp.entities.Transfer;
 import com.yassir.bankingapp.mappers.TransfersMapper;
@@ -41,10 +41,10 @@ public class TransfersServicesTest {
     @Transactional
     public void testDoTransfer_Successful() {
         // Create a TransferDTO object
-        TransferDTO transferDTO = new TransferDTO();
-        transferDTO.setFromId(1L);
-        transferDTO.setToId(2L);
-        transferDTO.setTransferAmount(100L);
+        TransferResponseDTO transferResponseDTO = new TransferResponseDTO();
+        transferResponseDTO.setFromId(1L);
+        transferResponseDTO.setToId(2L);
+        transferResponseDTO.setTransferAmount(100L);
 
         // Create a mocked Account object
         Account account1 = new Account();
@@ -55,19 +55,19 @@ public class TransfersServicesTest {
         // Mock the behavior of accountsService.getAccount()
         Mockito.when(accountsService.getAccount(1L)).thenReturn(Optional.of(account1));
         Mockito.when(accountsService.getAccount(2L)).thenReturn(Optional.of(account2));
-        Mockito.when(accountsService.submitTransfer(transferDTO)).thenReturn(true);
+        Mockito.when(accountsService.submitTransfer(transferResponseDTO)).thenReturn(true);
 
         // Create a mocked Transfer object
         Transfer transfer = new Transfer();
         transfer.setId(1L);
 
-        Mockito.when(transfersMapper.fromDtoToEntity(Mockito.any(TransferDTO.class))).thenReturn(transfer);
+        Mockito.when(transfersMapper.fromDtoToEntity(Mockito.any(TransferResponseDTO.class))).thenReturn(transfer);
 
         // Mock the behavior of transfersRepository.save()
         Mockito.when(transfersRepository.save(Mockito.any(Transfer.class))).thenReturn(transfer);
 
         // Call the doTransfer() method
-        GenericResponseDTO response = transferService.doTransfer(transferDTO);
+        GenericResponseDTO response = transferService.doTransfer(transferResponseDTO);
 
         // Verify the response
         assertEquals("OK", response.getMsg());
@@ -98,23 +98,23 @@ public class TransfersServicesTest {
         Mockito.when(transfersRepository.findByFromAccountOrToAccount(account, account)).thenReturn(transfers);
 
         // Create a list of mocked TransferDTO objects
-        List<TransferDTO> transferDTOs = new ArrayList<>();
-        TransferDTO transferDTO1 = new TransferDTO();
-        transferDTO1.setId(1L);
-        TransferDTO transferDTO2 = new TransferDTO();
-        transferDTO2.setId(2L);
-        transferDTOs.add(transferDTO1);
-        transferDTOs.add(transferDTO2);
+        List<TransferResponseDTO> transferResponseDTOS = new ArrayList<>();
+        TransferResponseDTO transferResponseDTO1 = new TransferResponseDTO();
+        transferResponseDTO1.setId(1L);
+        TransferResponseDTO transferResponseDTO2 = new TransferResponseDTO();
+        transferResponseDTO2.setId(2L);
+        transferResponseDTOS.add(transferResponseDTO1);
+        transferResponseDTOS.add(transferResponseDTO2);
 
-        Mockito.when(transfersMapper.fromListEntityToListDto(transfers)).thenReturn(transferDTOs);
+        Mockito.when(transfersMapper.fromListEntityToListDto(transfers)).thenReturn(transferResponseDTOS);
 
         // Call the getTransferHistoryForAccount() method
-        List<TransferDTO> transferDTOResults = transferService.getTransferHistoryForAccount(1L);
+        List<TransferResponseDTO> transferResponseDTOResults = transferService.getTransferHistoryForAccount(1L);
 
         // Verify the result
-        assertEquals(2, transferDTOResults.size());
-        assertEquals(1L, transferDTOResults.get(0).getId());
-        assertEquals(2L, transferDTOResults.get(1).getId());
+        assertEquals(2, transferResponseDTOResults.size());
+        assertEquals(1L, transferResponseDTOResults.get(0).getId());
+        assertEquals(2L, transferResponseDTOResults.get(1).getId());
     }
 
     @Test
@@ -124,9 +124,9 @@ public class TransfersServicesTest {
         Mockito.when(accountsService.getAccount(1L)).thenReturn(Optional.empty());
 
         // Call the getTransferHistoryForAccount() method
-        List<TransferDTO> transferDTOs = transferService.getTransferHistoryForAccount(1L);
+        List<TransferResponseDTO> transferResponseDTOS = transferService.getTransferHistoryForAccount(1L);
 
         // Verify the result
-        assertTrue(transferDTOs.isEmpty());
+        assertTrue(transferResponseDTOS.isEmpty());
     }
 }
