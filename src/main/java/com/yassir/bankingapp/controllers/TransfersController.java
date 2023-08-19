@@ -1,6 +1,12 @@
 package com.yassir.bankingapp.controllers;
 
+import com.yassir.bankingapp.dtos.AccountDTO;
+import com.yassir.bankingapp.dtos.GenericResponseDTO;
 import com.yassir.bankingapp.dtos.TransferDTO;
+import com.yassir.bankingapp.services.ITransfersService;
+import io.swagger.v3.oas.annotations.Parameter;
+import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,18 +17,22 @@ import java.util.List;
 @RequestMapping("/api/v1/transfers")
 public class TransfersController {
 
-    @GetMapping("/history/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<TransferDTO> getTransferHistoryForAccount(){
+    @Autowired
+    ITransfersService transfersService;
 
-        return new ArrayList<>();
+    @GetMapping("/history/{accountId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TransferDTO> getTransferHistoryForAccount(@PathVariable(name="accountId")
+                                                              @Parameter(description = "Account id to review transaction history", required = true) Long accountId){
+        return transfersService.getTransferHistoryForAccount(accountId);
     }
 
-    @PostMapping("/{from}/to/{to}")
+    @PostMapping("/transfer")
     @ResponseStatus(HttpStatus.CREATED)
-    public TransferDTO transferFromAccount(){
+    public GenericResponseDTO transferFromAccount(@NonNull @RequestBody @Parameter(description = "Transfer information: From account id, target account id, amount", required = true)
+                                               TransferDTO transferDTO){
 
-        return new TransferDTO();
+        return transfersService.doTransfer(transferDTO);
     }
 
 
