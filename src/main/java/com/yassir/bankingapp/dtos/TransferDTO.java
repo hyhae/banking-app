@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransferDTO {
-
+    Long id;
     Long fromId;
     Long toId;
     LocalDate transferDate;

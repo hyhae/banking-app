@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BalanceDTO {
+    Long accId;
     String holderName;
     Long balance;
 }

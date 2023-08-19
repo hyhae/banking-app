@@ -16,7 +16,7 @@ public class AccountsController {
     @Autowired
     IAccountsService accountsService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{accountId}")
     @ResponseStatus(code=HttpStatus.OK)
     public BalanceDTO getAccountBalance(@PathVariable(name="accountId") @Parameter(description = "Account id", required = true) Long accountId){
         return accountsService.getBalance(accountId);
